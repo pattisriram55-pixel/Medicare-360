@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#0b766e">
+<title>MediCare 360 | Smart Hospital Management</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --teal:#0b766e;
+  --teal2:#12a594;
+  --ink:#18343a;
+  --muted:#71858a;
+  --bg:#f3f8f8;
+  --line:#e6eeee;
+  --white:#fff;
+  --nav:#102f35;
+  --shadow:0 12px 35px #173f4510;
+}
+
+* { box-sizing:border-box; }
+
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif;
+}
+
+button,input,select,textarea { font:inherit; }
+button { cursor:pointer; }
+
+.shell { display:flex; min-height:100vh; }
+
+.sidebar {
+  width:248px;
+  background:var(--nav);
+  color:#d7e9e7;
+  padding:25px 16px;
+  display:flex;
+  flex-direction:column;
+  position:fixed;
+  inset:0 auto 0 0;
+  z-index:5;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:0 10px 30px;
+  color:white;
+  font:800 19px Manrope;
+}
+
+.brandmark {
+  width:38px;
+  height:38px;
+  border-radius:13px;
+  background:#1ba897;
+  display:grid;
+  place-items:center;
+  font-size:23px;
+}
+
+.brand small {
+  display:block;
+  color:#9abbb7;
+  font:500 10px 'DM Sans';
+  letter-spacing:1.7px;
+  margin-top:2px;
+}
+
+.navlabel {
+  font-size:10px;
+  color:#789a98;
+  letter-spacing:1.5px;
+  padding:12px 13px 8px;
+}
+
+.navbtn {
+  border:0;
+  background:transparent;
+  color:#b7cfcc;
+  text-align:left;
+  padding:12px 13px;
+  border-radius:11px;
+  margin:2px 0;
+  display:flex;
+  gap:13px;
+  align-items:center;
+  width:100%;
+  font-size:13px;
+}
+
+.navbtn .ico {
+  font-size:17px;
+  width:20px;
+  text-align:center;
+}
+
+.navbtn:hover,.navbtn.active {
+  background:#1d4a4d;
+  color:white;
+}
+
+.navbtn.active {
+  box-shadow:inset 3px 0 #27c4ae;
+}
+
+.sidebottom {
+  margin-top:auto;
+  border-top:1px solid #315157;
+  padding:17px 8px 0;
+  font-size:12px;
+  color:#a6c1be;
+}
+
+.userchip {
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.avatar {
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  display:grid;
+  place-items:center;
+  background:#d6f3ed;
+  color:#08776d;
+  font-weight:700;
+}
+
+.main {
+  margin-left:248px;
+  width:calc(100% - 248px);
+  padding:28px 34px 45px;
+  max-width:1600px;
+}
+
+.topbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:28px;
+}
+
+.eyebrow {
+  color:var(--teal);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:1.6px;
+  text-transform:uppercase;
+}
+
+.topbar h1 {
+  font:800 26px Manrope;
+  margin:5px 0 0;
+  letter-spacing:-.8px;
+}
+
+.topright {
+  display:flex;
+  align-items:center;
+  gap:13px;
+}
+
+.datepill,.iconbtn {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 13px;
+  color:#577176;
+  font-size:12px;
+}
+
+.iconbtn { font-size:17px; }
+.mobilebrand { display:none; }
+
+.welcome {
+  background:linear-gradient(110deg,#0c716b,#159f91);
+  border-radius:20px;
+  padding:25px 28px;
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  overflow:hidden;
+  position:relative;
+  box-shadow:var(--shadow);
+}
+
+.welcome:after {
+  content:'✚';
+  position:absolute;
+  right:12%;
+  top:-60px;
+  font-size:230px;
+  color:#ffffff0d;
+}
+
+.welcome h2 {
+  font:800 21px Manrope;
+  margin:0 0 7px;
+}
+
+.welcome p {
+  margin:0;
+  color:#d0f0eb;
+  font-size:13px;
+}
+
+.welcome .today {
+  background:#ffffff20;
+  border:1px solid #ffffff3a;
+  padding:10px 14px;
+  border-radius:12px;
+  font-size:12px;
+  z-index:1;
+}
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:15px;
+  margin:20px 0;
+}
+
+.stat {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:16px;
+  padding:18px 19px;
+  box-shadow:var(--shadow);
+}
+
+.stathead {
+  display:flex;
+  justify-content:space-between;
+  color:var(--muted);
+  font-size:12px;
+}
+
+.staticon {
+  width:35px;
+  height:35px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  font-size:17px;
+  background:#e7f7f4;
+}
+
+.stat strong {
+  display:block;
+  font:800 27px Manrope;
+  margin:12px 0 4px;
+}
+
+.stat small {
+  color:#91a1a3;
+  font-size:11px;
+}
+
+.contentgrid {
+  display:grid;
+  grid-template-columns:minmax(0,1.55fr) minmax(270px,.85fr);
+  gap:17px;
+}
+
+.panel {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:17px;
+  padding:20px;
+  box-shadow:var(--shadow);
+  min-width:0;
+}
+
+.panelhead {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:17px;
+}
+
+.panelhead h3 {
+  font:800 15px Manrope;
+  margin:0;
+}
+
+.sub {
+  font-size:11px;
+  color:#91a1a3;
+  margin-top:4px;
+}
+
+.linkbtn {
+  border:0;
+  background:transparent;
+  color:var(--teal);
+  font-weight:700;
+  font-size:12px;
+}
+
+.appt {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 0;
+  border-bottom:1px solid #edf2f2;
+}
+
+.appt:last-child { border:0; }
+
+.time {
+  background:#eef8f6;
+  color:var(--teal);
+  border-radius:10px;
+  padding:9px 10px;
+  font-size:11px;
+  font-weight:700;
+  min-width:62px;
+  text-align:center;
+}
+
+.person { flex:1; min-width:0; }
+.person b { font-size:12px; display:block; }
+.person small { color:var(--muted); font-size:11px; }
+
+.status {
+  font-size:10px;
+  padding:5px 8px;
+  border-radius:20px;
+  background:#e8f7ef;
+  color:#248353;
+}
+
+.status.pending { background:#fff5df; color:#a97818; }
+.status.cancelled { background:#fff0ef; color:#c05c53; }
+
+.quickgrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.quick {
+  border:1px solid var(--line);
+  border-radius:13px;
+  background:#fbfdfd;
+  padding:14px;
+  text-align:left;
+  color:var(--ink);
+  transition:.2s;
+}
+
+.quick:hover {
+  border-color:#9bd7ce;
+  transform:translateY(-2px);
+}
+
+.quick span { font-size:21px; }
+.quick b { display:block; font-size:12px; margin-top:9px; }
+.quick small { color:var(--muted); font-size:10px; }
+
+.bottomgrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:17px;
+  margin-top:17px;
+}
+
+.barrow {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin:14px 0;
+  font-size:11px;
+  color:var(--muted);
+}
+
+.bar {
+  height:7px;
+  background:#edf3f2;
+  border-radius:10px;
+  flex:1;
+  overflow:hidden;
+}
+
+.bar i {
+  display:block;
+  height:100%;
+  background:#18a795;
+  border-radius:10px;
+}
+
+.inventoryitem {
+  display:flex;
+  justify-content:space-between;
+  padding:12px 0;
+  border-bottom:1px solid #edf2f2;
+  font-size:12px;
+}
+
+.inventoryitem:last-child { border:0; }
+.low { color:#c17b26; font-weight:700; font-size:10px; }
+
+.page { display:none; }
+.page.active { display:block; }
+
+.pageintro {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.pageintro h2 {
+  font:800 21px Manrope;
+  margin:0;
+}
+
+.pageintro p {
+  color:var(--muted);
+  font-size:12px;
+  margin:5px 0 0;
+}
+
+.primary {
+  background:var(--teal);
+  color:white;
+  border:0;
+  border-radius:10px;
+  padding:11px 15px;
+  font-size:12px;
+  font-weight:700;
+  box-shadow:0 5px 14px #0b766e25;
+}
+
+.primary:hover { background:#095e58; }
+
+.toolbar {
+  display:flex;
+  gap:10px;
+  margin-bottom:14px;
+}
+
+.search {
+  flex:1;
+  max-width:350px;
+  padding:11px 13px;
+  border:1px solid var(--line);
+  border-radius:10px;
+  background:white;
+  outline:none;
+  font-size:12px;
+}
+
+.search:focus,input:focus,select:focus,textarea:focus {
+  border-color:#5dbdb1;
+  box-shadow:0 0 0 3px #0b766e12;
+  outline:none;
+}
+
+.tablewrap {
+  overflow:auto;
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  box-shadow:var(--shadow);
+}
+
+table {
+  border-collapse:collapse;
+  width:100%;
+  min-width:650px;
+}
+
+th,td {
+  text-align:left;
+  padding:14px 16px;
+  border-bottom:1px solid #edf2f2;
+  font-size:12px;
+}
+
+th {
+  font-size:10px;
+  color:#839699;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  background:#fbfdfd;
+}
+
+td { color:#456066; }
+td b { color:var(--ink); }
+tr:last-child td { border:0; }
+
+.action {
+  border:0;
+  background:#eef8f6;
+  color:var(--teal);
+  padding:6px 9px;
+  border-radius:7px;
+  font-size:10px;
+  font-weight:700;
+  margin-right:4px;
+}
+
+.empty {
+  text-align:center;
+  padding:35px;
+  color:var(--muted);
+  font-size:13px;
+}
+
+.doctorgrid {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+}
+
+.doctor {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:18px;
+  box-shadow:var(--shadow);
+}
+
+.docavatar {
+  width:48px;
+  height:48px;
+  border-radius:15px;
+  background:#e4f6f2;
+  display:grid;
+  place-items:center;
+  font-size:24px;
+  margin-bottom:12px;
+}
+
+.doctor h3 {
+  font:700 14px Manrope;
+  margin:0 0 4px;
+}
+
+.doctor p {
+  font-size:11px;
+  color:var(--muted);
+  margin:0 0 12px;
+}
+
+.doctor small {
+  font-size:10px;
+  color:var(--teal);
+  font-weight:700;
+}
+
+.modalback {
+  display:none;
+  position:fixed;
+  inset:0;
+  background:#0b2528a8;
+  z-index:20;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+}
+
+.modalback.show { display:flex; }
+
+.modal {
+  width:min(520px,100%);
+  background:white;
+  border-radius:18px;
+  padding:23px;
+  max-height:90vh;
+  overflow:auto;
+  box-shadow:0 25px 80px #0003;
+}
+
+.modalhead {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:18px;
+}
+
+.modalhead h3 {
+  font:800 18px Manrope;
+  margin:0;
+}
+
+.close {
+  border:0;
+  background:#eff5f4;
+  border-radius:8px;
+  width:30px;
+  height:30px;
+  font-size:18px;
+}
+
+.formgrid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.field {
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  margin-bottom:12px;
+}
+
+.field.full { grid-column:1/-1; }
+
+.field label {
+  font-size:11px;
+  font-weight:700;
+  color:#5b7478;
+}
+
+.field input,.field select,.field textarea {
+  width:100%;
+  border:1px solid var(--line);
+  border-radius:9px;
+  padding:11px;
+  font-size:12px;
+  background:#fbfdfd;
+}
+
+.formactions {
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:8px;
+}
+
+.secondary {
+  background:#f0f5f4;
+  border:0;
+  color:#547075;
+  padding:10px 14px;
+  border-radius:9px;
+  font-size:12px;
+}
+
+.toast {
+  position:fixed;
+  bottom:22px;
+  right:22px;
+  background:#153f40;
+  color:white;
+  padding:13px 17px;
+  border-radius:11px;
+  font-size:12px;
+  box-shadow:var(--shadow);
+  opacity:0;
+  transform:translateY(10px);
+  transition:.25s;
+  z-index:30;
+}
+
+.toast.show { opacity:1; transform:none; }
+
+.notice {
+  font-size:11px;
+  color:#809497;
+  background:#f6faf9;
+  padding:12px;
+  border-radius:10px;
+  margin-top:15px;
+  line-height:1.6;
+}
+
+.mobilemenu { display:none; }
+
+@media(max-width:1000px) {
+  .stats { grid-template-columns:repeat(2,1fr); }
+  .contentgrid { grid-template-columns:1fr; }
+  .doctorgrid { grid-template-columns:repeat(2,1fr); }
+}
+
+@media(max-width:700px) {
+  .sidebar {
+    transform:translateX(-100%);
+    transition:.25s;
+    width:265px;
+  }
+
+  .sidebar.open { transform:translateX(0); }
+
+  .main {
+    margin:0;
+    width:100%;
+    padding:17px 15px 35px;
+  }
+
+  .mobilebrand {
+    display:flex;
+    align-items:center;
+    gap:9px;
+    font:800 16px Manrope;
+  }
+
+  .mobilebrand .brandmark {
+    width:32px;
+    height:32px;
+    border-radius:10px;
+  }
+
+  .topbar { margin-bottom:18px; }
+  .topbar h1 { font-size:21px; }
+  .topright .datepill { display:none; }
+
+  .mobilemenu {
+    display:inline-grid;
+    place-items:center;
+    width:38px;
+    height:38px;
+    border:1px solid var(--line);
+    background:white;
+    border-radius:10px;
+    font-size:18px;
+    margin-right:8px;
+  }
+
+  .topbarleft {
+    display:flex;
+    align-items:center;
+  }
+
+  .welcome {
+    padding:21px;
+    border-radius:16px;
+  }
+
+  .welcome h2 { font-size:18px; }
+  .welcome .today { display:none; }
+
+  .stats {
+    gap:10px;
+    margin:14px 0;
+  }
+
+  .stat { padding:14px; }
+  .stat strong { font-size:23px; }
+
+  .contentgrid,.bottomgrid { grid-template-columns:1fr; }
+  .doctorgrid { grid-template-columns:1fr; }
+  .pageintro { align-items:flex-start; gap:10px; }
+  .pageintro h2 { font-size:18px; }
+  .formgrid { grid-template-columns:1fr; }
+  .field.full { grid-column:auto; }
+  .panel { padding:15px; }
+  .tablewrap { border-radius:12px; }
+}
+</style>
+</head>
+
+<body>
+<div class="shell">
+
+<aside class="sidebar" id="sidebar">
+  <div class="brand">
+    <div class="brandmark">✚</div>
+    <div>MediCare 360<small>SMART HOSPITAL SYSTEM</small></div>
+  </div>
+
+  <div class="navlabel">MAIN MENU</div>
+  <button class="navbtn active" data-page="dashboard"><span class="ico">▦</span> Dashboard</button>
+  <button class="navbtn" data-page="patients"><span class="ico">♙</span> Patients</button>
+  <button class="navbtn" data-page="appointments"><span class="ico">▣</span> Appointments</button>
+  <button class="navbtn" data-page="doctors"><span class="ico">⚕</span> Doctors & Departments</button>
+
+  <div class="navlabel">HOSPITAL OPERATIONS</div>
+  <button class="navbtn" data-page="billing"><span class="ico">₹</span> Billing</button>
+  <button class="navbtn" data-page="pharmacy"><span class="ico">✚</span> Pharmacy & Inventory</button>
+  <button class="navbtn" data-page="reports"><span class="ico">▤</span> Reports</button>
+
+  <div class="sidebottom">
+    <div class="userchip">
+      <div class="avatar">PS</div>
+      <div><b>Patti Sriram</b><br><small>Administrator</small></div>
+    </div>
+  </div>
+</aside>
+
+<main class="main">
+<header class="topbar">
+  <div class="topbarleft">
+    <button class="mobilemenu" id="menuBtn">☰</button>
+    <div>
+      <div class="mobilebrand"><div class="brandmark">✚</div>MediCare 360</div>
+      <div class="eyebrow" id="crumb">OVERVIEW</div>
+      <h1 id="pagetitle">Dashboard</h1>
+    </div>
+  </div>
+
+  <div class="topright">
+    <div class="datepill" id="todayLabel"></div>
+    <button class="iconbtn" onclick="toast('You are all caught up!')">♧</button>
+  </div>
+</header>
+
+<!-- DASHBOARD -->
+<section class="page active" id="dashboard">
+
+  <div class="welcome">
+    <div>
+      <h2>Welcome back, Sriram! 👋</h2>
+      <p>Here's what's happening at your hospital today.</p>
+    </div>
+    <div class="today">✦ Your hospital overview</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="stathead">Total Patients <span class="staticon">♙</span></div>
+      <strong id="statPatients">0</strong>
+      <small>Registered patients</small>
+    </div>
+
+    <div class="stat">
+      <div class="stathead">Appointments <span class="staticon">▣</span></div>
+      <strong id="statAppts">0</strong>
+      <small>Total bookings</small>
+    </div>
+
+    <div class="stat">
+      <div class="stathead">Available Doctors <span class="staticon">⚕</span></div>
+      <strong id="statDoctors">0</strong>
+      <small>Doctor profiles</small>
+    </div>
+
+    <div class="stat">
+      <div class="stathead">Pending Payments <span class="staticon">₹</span></div>
+      <strong id="statPending">₹0</strong>
+      <small>Outstanding amount</small>
+    </div>
+  </div>
+
+  <div class="contentgrid">
+    <div class="panel">
+      <div class="panelhead">
+        <div><h3>Recent Appointments</h3><div class="sub">Latest scheduled visits</div></div>
+        <button class="linkbtn" onclick="showPage('appointments')">View all →</button>
+      </div>
+      <div id="recentAppts"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panelhead">
+        <div><h3>Quick Actions</h3><div class="sub">Common hospital tasks</div></div>
+      </div>
+
+      <div class="quickgrid">
+        <button class="quick" onclick="openModal('patient')"><span>♙</span><b>Add Patient</b><small>Register a patient</small></button>
+        <button class="quick" onclick="openModal('appointment')"><span>▣</span><b>Book Visit</b><small>Schedule appointment</small></button>
+        <button class="quick" onclick="openModal('doctor')"><span>⚕</span><b>Add Doctor</b><small>New doctor profile</small></button>
+        <button class="quick" onclick="openModal('bill')"><span>₹</span><b>Create Bill</b><small>Generate invoice</small></button>
+      </div>
+    </div>
+  </div>
+
+  <div class="bottomgrid">
+    <div class="panel">
+      <div class="panelhead"><div><h3>Appointment Overview</h3><div class="sub">Booking status breakdown</div></div></div>
+      <div id="apptOverview"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panelhead"><div><h3>Low Stock Alerts</h3><div class="sub">Medicine inventory</div></div><button class="linkbtn" onclick="showPage('pharmacy')">Manage →</button></div>
+      <div id="lowStock"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PATIENTS -->
+<section class="page" id="patients">
+  <div class="pageintro">
+    <div><h2>Patient Records</h2><p>Register and manage patient information.</p></div>
+    <button class="primary" onclick="openModal('patient')">+ Add Patient</button>
+  </div>
+  <div class="toolbar"><input class="search" placeholder="Search patients..." oninput="renderPatients(this.value)"></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Patient Name</th><th>Patient ID</th><th>Age / Gender</th><th>Phone</th><th>Blood Group</th><th>Action</th></tr></thead>
+      <tbody id="patientRows"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- APPOINTMENTS -->
+<section class="page" id="appointments">
+  <div class="pageintro">
+    <div><h2>Appointments</h2><p>Schedule and track doctor visits.</p></div>
+    <button class="primary" onclick="openModal('appointment')">+ Book Appointment</button>
+  </div>
+  <div class="toolbar"><input class="search" placeholder="Search appointments..." oninput="renderAppointments(this.value)"></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Patient</th><th>Doctor</th><th>Department</th><th>Date / Time</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="appointmentRows"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- DOCTORS -->
+<section class="page" id="doctors">
+  <div class="pageintro">
+    <div><h2>Doctors & Departments</h2><p>Manage medical professionals and specialties.</p></div>
+    <button class="primary" onclick="openModal('doctor')">+ Add Doctor</button>
+  </div>
+  <div class="doctorgrid" id="doctorGrid"></div>
+</section>
+
+<!-- BILLING -->
+<section class="page" id="billing">
+  <div class="pageintro">
+    <div><h2>Billing & Payments</h2><p>Track hospital service charges and invoices.</p></div>
+    <button class="primary" onclick="openModal('bill')">+ Create Invoice</button>
+  </div>
+  <div class="toolbar"><input class="search" placeholder="Search invoices..." oninput="renderBills(this.value)"></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Invoice ID</th><th>Patient</th><th>Service</th><th>Amount</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="billRows"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- PHARMACY -->
+<section class="page" id="pharmacy">
+  <div class="pageintro">
+    <div><h2>Pharmacy & Inventory</h2><p>Monitor medicine stock and reorder levels.</p></div>
+    <button class="primary" onclick="openModal('medicine')">+ Add Medicine</button>
+  </div>
+  <div class="toolbar"><input class="search" placeholder="Search medicines..." oninput="renderMedicines(this.value)"></div>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>Medicine</th><th>Category</th><th>Stock</th><th>Reorder Level</th><th>Status</th><th>Action</th></tr></thead>
+      <tbody id="medicineRows"></tbody>
+    </table>
+  </div>
+</section>
+
+<!-- REPORTS -->
+<section class="page" id="reports">
+  <div class="pageintro">
+    <div><h2>Hospital Reports</h2><p>Overview of hospital operations and activity.</p></div>
+    <button class="primary" onclick="exportReport()">↓ Export CSV</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="stathead">Patients</div><strong id="rPatients">0</strong><small>Total registered</small></div>
+    <div class="stat"><div class="stathead">Appointments</div><strong id="rAppts">0</strong><small>Total bookings</small></div>
+    <div class="stat"><div class="stathead">Paid Invoices</div><strong id="rPaid">0</strong><small>Completed payments</small></div>
+    <div class="stat"><div class="stathead">Medicines</div><strong id="rStock">0</strong><small>Inventory items</small></div>
+  </div>
+
+  <div class="panel">
+    <h3>System Information</h3>
+    <p class="notice">MediCare 360 is a hospital administration demonstration. It supports patient records, appointments, doctor management, billing and medicine inventory. This application does not replace professional medical judgment.</p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<!-- MODAL -->
+<div class="modalback" id="modalback">
+  <div class="modal">
+    <div class="modalhead">
+      <h3 id="modalTitle">Add Record</h3>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <form id="recordForm">
+      <div class="formgrid" id="formFields"></div>
+      <div class="formactions">
+        <button type="button" class="secondary" onclick="closeModal()">Cancel</button>
+        <button type="submit" class="primary">Save Record</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+**Continue the same code immediately after the toast `<div>` above:**
+
+```html
+<script>
+const seed = {
+  patients: [
+    {id:'PT-1001',name:'Aarav Sharma',age:28,gender:'Male',phone:'9876543210',blood:'B+'},
+    {id:'PT-1002',name:'Ananya Verma',age:34,gender:'Female',phone:'9876501234',blood:'O+'},
+    {id:'PT-1003',name:'Rohan Mehta',age:45,gender:'Male',phone:'9812345670',blood:'A+'}
+  ],
+
+  doctors: [
+    {id:'D-01',name:'Dr. Meera Kapoor',specialty:'Cardiology',department:'Cardiology',time:'09:00 AM – 02:00 PM'},
+    {id:'D-02',name:'Dr. Arjun Rao',specialty:'Neurology',department:'Neurology',time:'10:00 AM – 04:00 PM'},
+    {id:'D-03',name:'Dr. Neha Singh',specialty:'Pediatrics',department:'Pediatrics',time:'09:30 AM – 03:00 PM'}
+  ],
+
+  appointments: [
+    {id:'AP-2001',patient:'Aarav Sharma',doctor:'Dr. Meera Kapoor',department:'Cardiology',date:new Date().toISOString().slice(0,10),time:'10:00',status:'Confirmed'},
+    {id:'AP-2002',patient:'Ananya Verma',doctor:'Dr. Neha Singh',department:'Pediatrics',date:new Date().toISOString().slice(0,10),time:'11:30',status:'Pending'},
+    {id:'AP-2003',patient:'Rohan Mehta',doctor:'Dr. Arjun Rao',department:'Neurology',date:new Date(Date.now()+86400000).toISOString().slice(0,10),time:'12:00',status:'Confirmed'}
+  ],
+
+  bills: [
+    {id:'INV-3001',patient:'Aarav Sharma',service:'Consultation',amount:800,status:'Paid'},
+    {id:'INV-3002',patient:'Ananya Verma',service:'Lab tests',amount:1450,status:'Pending'}
+  ],
+
+  medicines: [
+    {id:'M-01',name:'Paracetamol 500mg',category:'Pain relief',qty:120,reorder:30},
+    {id:'M-02',name:'Vitamin C',category:'Supplement',qty:18,reorder:25},
+    {id:'M-03',name:'Antacid tablets',category:'Digestive',qty:64,reorder:20}
+  ]
+};
+
+let db;
+
+try {
+  db = JSON.parse(localStorage.getItem('mc360-data')) || structuredClone(seed);
+} catch(e) {
+  db = structuredClone(seed);
+}
+
+let currentType = '';
+
+const save = () =>
+  localStorage.setItem('mc360-data',JSON.stringify(db));
+
+const fmtDate = d =>
+  d ? new Date(d+'T00:00:00').toLocaleDateString('en-IN',
+  {day:'2-digit',month:'short',year:'numeric'}) : '—';
+
+const money = n =>
+  '₹' + Number(n || 0).toLocaleString('en-IN');
+
+document.getElementById('todayLabel').textContent =
+  new Date().toLocaleDateString('en-IN',{
+    weekday:'long',
+    day:'numeric',
+    month:'long'
+  });
+
+document.querySelectorAll('.navbtn').forEach(btn => {
+  btn.addEventListener('click',() => showPage(btn.dataset.page));
+});
+
+document.getElementById('menuBtn').onclick = () => {
+  document.getElementById('sidebar').classList.toggle('open');
+};
+
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p =>
+    p.classList.toggle('active',p.id === id)
+  );
+
+  document.querySelectorAll('.navbtn').forEach(b =>
+    b.classList.toggle('active',b.dataset.page === id)
+  );
+
+  const names = {
+    dashboard:'Dashboard',
+    patients:'Patients',
+    appointments:'Appointments',
+    doctors:'Doctors & Departments',
+    billing:'Billing',
+    pharmacy:'Pharmacy & Inventory',
+    reports:'Reports'
+  };
+
+  document.getElementById('pagetitle').textContent = names[id];
+
+  document.getElementById('crumb').textContent =
+    id === 'dashboard' ? 'OVERVIEW' : 'HOSPITAL MANAGEMENT';
+
+  document.getElementById('sidebar').classList.remove('open');
+
+  renderAll();
+}
+
+function toast(msg) {
+  let t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+
+  setTimeout(() => t.classList.remove('show'),2600);
+}
+
+function closeModal() {
+  document.getElementById('modalback').classList.remove('show');
+}
+
+const field = (label,name,type='text',opts='',required=true) =>
+`<div class="field">
+<label>${label}</label>
+${type === 'select'
+? `<select name="${name}" ${required?'required':''}>${opts}</select>`
+: `<input name="${name}" type="${type}" ${required?'required':''} ${type==='number'?'min="0"':''}>`}
+</div>`;
+
+function openModal(type) {
+  currentType = type;
+
+  let title = '';
+  let html = '';
+
+  if(type === 'patient') {
+    title = 'Register new patient';
+
+    html =
+      field('Full name','name') +
+      field('Age','age','number') +
+      field('Gender','gender','select',
+        '<option value="">Select gender</option><option>Female</option><option>Male</option><option>Other</option>') +
+      field('Phone number','phone','tel') +
+      field('Blood group','blood','select',
+        '<option value="">Select group</option>' +
+        ['A+','A-','B+','B-','AB+','AB-','O+','O-']
+        .map(x=>`<option>${x}</option>`).join(''));
+  }
+
+  if(type === 'doctor') {
+    title = 'Add doctor profile';
+
+    html =
+      field('Doctor name','name') +
+      field('Specialty','specialty') +
+      field('Department','department') +
+      field('Availability','time');
+  }
+
+  if(type === 'appointment') {
+    title = 'Book an appointment';
+
+    let patients = db.patients.map(p =>
+      `<option>${p.name}</option>`).join('');
+
+    let doctors = db.doctors.map(d =>
+      `<option>${d.name}</option>`).join('');
+
+    html =
+      field('Patient','patient','select',
+        '<option value="">Select patient</option>'+patients) +
+
+      field('Doctor','doctor','select',
+        '<option value="">Select doctor</option>'+doctors) +
+
+      field('Department','department','select',
+        '<option value="">Select department</option>' +
+        [...new Set(db.doctors.map(d=>d.department))]
+        .map(x=>`<option>${x}</option>`).join('')) +
+
+      field('Appointment date','date','date') +
+      field('Appointment time','time','time');
+  }
+
+  if(type === 'bill') {
+    title = 'Create invoice';
+
+    html =
+      field('Patient','patient','select',
+        '<option value="">Select patient</option>' +
+        db.patients.map(p=>`<option>${p.name}</option>`).join('')) +
+
+      field('Service description','service') +
+      field('Amount (₹)','amount','number') +
+
+      field('Payment status','status','select',
+        '<option>Pending</option><option>Paid</option>');
+  }
+
+  if(type === 'medicine') {
+    title = 'Add medicine to inventory';
+
+    html =
+      field('Medicine name','name') +
+      field('Category','category') +
+      field('Stock quantity','qty','number') +
+      field('Reorder level','reorder','number');
+  }
+
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('formFields').innerHTML = html;
+  document.getElementById('modalback').classList.add('show');
+
+  document.getElementById('recordForm').onsubmit = submitRecord;
+}
+
+function submitRecord(e) {
+  e.preventDefault();
+
+  let d = Object.fromEntries(new FormData(e.target).entries());
+
+  if(currentType === 'patient') {
+    db.patients.push({
+      id:'PT-'+(1001+db.patients.length),
+      ...d,
+      age:+d.age
+    });
+  }
+
+  if(currentType === 'doctor') {
+    db.doctors.push({
+      id:'D-'+String(db.doctors.length+1).padStart(2,'0'),
+      ...d
+    });
+  }
+
+  if(currentType === 'appointment') {
+    db.appointments.push({
+      id:'AP-'+(2001+db.appointments.length),
+      ...d,
+      status:'Pending'
+    });
+  }
+
+  if(currentType === 'bill') {
+    db.bills.push({
+      id:'INV-'+(3001+db.bills.length),
+      ...d,
+      amount:+d.amount
+    });
+  }
+
+  if(currentType === 'medicine') {
+    db.medicines.push({
+      id:'M-'+String(db.medicines.length+1).padStart(2,'0'),
+      ...d,
+      qty:+d.qty,
+      reorder:+d.reorder
+    });
+  }
+
+  save();
+  closeModal();
+  renderAll();
+  toast('Record saved successfully');
+}
+
+function renderPatients(q='') {
+  let a = db.patients.filter(p =>
+    Object.values(p).join(' ').toLowerCase().includes(q.toLowerCase())
+  );
+
+  document.getElementById('patientRows').innerHTML =
+    a.map(p=>`
+      <tr>
+        <td><b>${p.name}</b></td>
+        <td>${p.id}</td>
+        <td>${p.age} / ${p.gender}</td>
+        <td>${p.phone}</td>
+        <td>${p.blood}</td>
+        <td><button class="action" onclick="toast('Patient record: ${p.id}')">View</button></td>
+      </tr>
+    `).join('') ||
+    '<tr><td colspan="6" class="empty">No patient records found.</td></tr>';
+}
+
+function renderAppointments(q='') {
+  let a = db.appointments.filter(p =>
+    Object.values(p).join(' ').toLowerCase().includes(q.toLowerCase())
+  );
+
+  document.getElementById('appointmentRows').innerHTML =
+    a.map(p=>`
+      <tr>
+        <td><b>${p.patient}</b><br><small>${p.id}</small></td>
+        <td>${p.doctor}</td>
+        <td>${p.department}</td>
+        <td>${fmtDate(p.date)}<br>${p.time}</td>
+        <td>
+          <span class="status ${p.status==='Pending'?'pending':p.status==='Cancelled'?'cancelled':''}">
+            ${p.status}
+          </span>
+        </td>
+        <td>
+          ${p.status!=='Cancelled'
+          ? `<button class="action" onclick="setStatus('appointment','${p.id}','Cancelled')">Cancel</button>`
+          : '—'}
+        </td>
+      </tr>
+    `).join('') ||
+    '<tr><td colspan="6" class="empty">No appointments found.</td></tr>';
+}
+
+function renderDoctors() {
+  document.getElementById('doctorGrid').innerHTML =
+    db.doctors.map(d=>`
+      <div class="doctor">
+        <div class="docavatar">⚕</div>
+        <h3>${d.name}</h3>
+        <p>${d.specialty} · ${d.department}</p>
+        <small>◷ ${d.time || 'Schedule not set'}</small>
+      </div>
+    `).join('') ||
+    '<div class="empty">No doctors added yet.</div>';
+}
+
+function renderBills(q='') {
+  let a = db.bills.filter(p =>
+    Object.values(p).join(' ').toLowerCase().includes(q.toLowerCase())
+  );
+
+  document.getElementById('billRows').innerHTML =
+    a.map(p=>`
+      <tr>
+        <td><b>${p.id}</b></td>
+        <td>${p.patient}</td>
+        <td>${p.service}</td>
+        <td>${money(p.amount)}</td>
+        <td>
+          <span class="status ${p.status==='Pending'?'pending':''}">
+            ${p.status}
+          </span>
+        </td>
+        <td>
+          ${p.status==='Pending'
+          ? `<button class="action" onclick="setStatus('bill','${p.id}','Paid')">Mark paid</button>`
+          : '—'}
+        </td>
+      </tr>
+    `).join('') ||
+    '<tr><td colspan="6" class="empty">No invoices found.</td></tr>';
+}
+
+function renderMedicines(q='') {
+  let a = db.medicines.filter(p =>
+    Object.values(p).join(' ').toLowerCase().includes(q.toLowerCase())
+  );
+
+  document.getElementById('medicineRows').innerHTML =
+    a.map(p=>`
+      <tr>
+        <td><b>${p.name}</b></td>
+        <td>${p.category}</td>
+        <td>${p.qty}</td>
+        <td>${p.reorder}</td>
+        <td>
+          <span class="status ${p.qty<=p.reorder?'pending':''}">
+            ${p.qty<=p.reorder?'Low stock':'In stock'}
+          </span>
+        </td>
+        <td>
+          <button class="action" onclick="adjustStock('${p.id}')">
+            Update stock
+          </button>
+        </td>
+      </tr>
+    `).join('') ||
+    '<tr><td colspan="6" class="empty">No medicines found.</td></tr>';
+}
+
+function setStatus(type,id,status) {
+  let arr = type==='appointment'
+    ? db.appointments
+    : db.bills;
+
+  let x = arr.find(a=>a.id===id);
+
+  if(x) x.status = status;
+
+  save();
+  renderAll();
+  toast('Status updated');
+}
+
+function adjustStock(id) {
+  let m = db.medicines.find(x=>x.id===id);
+
+  let n = prompt(
+    'Enter updated stock quantity for '+m.name,
+    m.qty
+  );
+
+  if(n!==null && n.trim()!=='' && !isNaN(n) && +n>=0) {
+    m.qty = +n;
+    save();
+    renderAll();
+    toast('Inventory updated');
+  }
+}
+
+function renderDashboard() {
+  document.getElementById('statPatients').textContent =
+    db.patients.length;
+
+  document.getElementById('statAppts').textContent =
+    db.appointments.length;
+
+  document.getElementById('statDoctors').textContent =
+    db.doctors.length;
+
+  document.getElementById('statPending').textContent =
+    money(db.bills.filter(b=>b.status==='Pending')
+    .reduce((s,b)=>s+Number(b.amount),0));
+
+  let ap = db.appointments.slice()
+    .sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))
+    .slice(0,4);
+
+  document.getElementById('recentAppts').innerHTML =
+    ap.map(a=>`
+      <div class="appt">
+        <div class="time">${a.time}</div>
+        <div class="person">
+          <b>${a.patient}</b>
+          <small>${a.doctor} · ${fmtDate(a.date)}</small>
+        </div>
+        <span class="status ${a.status==='Pending'?'pending':a.status==='Cancelled'?'cancelled':''}">
+          ${a.status}
+        </span>
+      </div>
+    `).join('') ||
+    '<div class="empty">No appointments yet.</div>';
+
+  let counts = ['Confirmed','Pending','Cancelled'];
+
+  document.getElementById('apptOverview').innerHTML =
+    counts.map(s=>{
+      let n = db.appointments.filter(a=>a.status===s).length;
+
+      let p = db.appointments.length
+        ? Math.round(n/db.appointments.length*100)
+        : 0;
+
+      return `
+        <div class="barrow">
+          <span style="width:72px">${s}</span>
+          <div class="bar"><i style="width:${p}%"></i></div>
+          <b>${n}</b>
+        </div>
+      `;
+    }).join('');
+
+  let low = db.medicines.filter(m=>m.qty<=m.reorder);
+
+  document.getElementById('lowStock').innerHTML =
+    low.map(m=>`
+      <div class="inventoryitem">
+        <span>${m.name}</span>
+        <span class="low">${m.qty} left</span>
+      </div>
+    `).join('') ||
+    '<div class="empty" style="padding:15px">All stock levels look good.</div>';
+}
+
+function renderReports() {
+  document.getElementById('rPatients').textContent =
+    db.patients.length;
+
+  document.getElementById('rAppts').textContent =
+    db.appointments.length;
+
+  document.getElementById('rPaid').textContent =
+    db.bills.filter(b=>b.status==='Paid').length;
+
+  document.getElementById('rStock').textContent =
+    db.medicines.length;
+}
+
+function renderAll() {
+  renderDashboard();
+
+  renderPatients(
+    document.querySelector('#patients .search')?.value || ''
+  );
+
+  renderAppointments(
+    document.querySelector('#appointments .search')?.value || ''
+  );
+
+  renderDoctors();
+
+  renderBills(
+    document.querySelector('#billing .search')?.value || ''
+  );
+
+  renderMedicines(
+    document.querySelector('#pharmacy .search')?.value || ''
+  );
+
+  renderReports();
+}
+
+function exportReport() {
+  let rows = [
+    ['Invoice ID','Patient','Service','Amount','Status'],
+    ...db.bills.map(b=>[
+      b.id,b.patient,b.service,b.amount,b.status
+    ])
+  ];
+
+  let csv = rows.map(r=>
+    r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(',')
+  ).join('\n');
+
+  let a = document.createElement('a');
+
+  a.href = URL.createObjectURL(
+    new Blob([csv],{type:'text/csv'})
+  );
+
+  a.download = 'medicare360-report.csv';
+  a.click();
+
+  URL.revokeObjectURL(a.href);
+  toast('Report exported');
+}
+
+renderAll();
+</script>
+</body>
+</html>
